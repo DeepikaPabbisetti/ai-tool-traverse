@@ -8,6 +8,7 @@ import FeaturedTools from "@/components/featured-tools";
 import TrendingTools from "@/components/trending-tools";
 import CategorySection from "@/components/category-section";
 import NewsSection from "@/components/news-section";
+import { motion } from "framer-motion";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -21,10 +22,34 @@ const Index = () => {
       <Header onSearch={handleSearch} />
       <main className="flex-grow">
         <HeroSection onSearch={handleSearch} />
-        <FeaturedTools />
-        <TrendingTools />
-        <CategorySection />
-        <NewsSection />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+        >
+          <FeaturedTools />
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+        >
+          <TrendingTools />
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
+        >
+          <CategorySection />
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+        >
+          <NewsSection />
+        </motion.div>
       </main>
       <Footer />
     </div>

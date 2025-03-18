@@ -1,12 +1,14 @@
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation, Autoplay } from 'swiper/modules';
+import { Pagination, Navigation, Autoplay, EffectCards } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import 'swiper/css/effect-cards';
 import { useFeaturedTools } from '@/hooks/use-tools';
 import ToolCard from '@/components/tool-card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { motion } from 'framer-motion';
 
 const FeaturedTools = () => {
   const { data: featuredTools, isLoading, error } = useFeaturedTools();
@@ -21,13 +23,24 @@ const FeaturedTools = () => {
   }
 
   return (
-    <section className="py-10">
+    <section className="py-16">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-8 text-center">
-          <span className="bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
-            Featured AI Tools
-          </span>
-        </h2>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
+              Featured AI Tools
+            </span>
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            Discover our handpicked selection of exceptional AI tools that stand out for their innovation and utility
+          </p>
+        </motion.div>
 
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -53,31 +66,44 @@ const FeaturedTools = () => {
             ))}
           </div>
         ) : (
-          <Swiper
-            modules={[Pagination, Navigation, Autoplay]}
-            spaceBetween={30}
-            slidesPerView={1}
-            pagination={{ clickable: true }}
-            navigation
-            autoplay={{ delay: 5000 }}
-            breakpoints={{
-              640: {
-                slidesPerView: 2,
-              },
-              1024: {
-                slidesPerView: 3,
-              },
-            }}
-            className="featured-swiper"
-          >
-            {featuredTools?.map((tool) => (
-              <SwiperSlide key={tool.id}>
-                <div className="p-2">
-                  <ToolCard tool={tool} featured={true} />
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          <div className="relative">
+            <Swiper
+              modules={[Pagination, Navigation, Autoplay, EffectCards]}
+              spaceBetween={30}
+              slidesPerView={1}
+              pagination={{ 
+                clickable: true,
+                dynamicBullets: true,
+              }}
+              navigation={{
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+              }}
+              autoplay={{ 
+                delay: 5000,
+                disableOnInteraction: false,
+              }}
+              breakpoints={{
+                640: {
+                  slidesPerView: 2,
+                },
+                1024: {
+                  slidesPerView: 3,
+                },
+              }}
+              className="featured-swiper py-10"
+            >
+              {featuredTools?.map((tool) => (
+                <SwiperSlide key={tool.id}>
+                  <div className="p-2">
+                    <ToolCard tool={tool} featured={true} />
+                  </div>
+                </SwiperSlide>
+              ))}
+              <div className="swiper-button-next !text-blue-600 after:!text-sm"></div>
+              <div className="swiper-button-prev !text-blue-600 after:!text-sm"></div>
+            </Swiper>
+          </div>
         )}
       </div>
     </section>
